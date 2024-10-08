@@ -37,3 +37,20 @@ jobs:
      run: npm ci
    - name: Build code
      run: npm run build
+   - name: Upload Artifact on github
+     uses: actions/upload-artifact@v4
+     with:
+      name: dist-files 
+      path: dist
+ deploy-job4:
+  needs: build-job3
+  runs-on: ubuntu-latest
+  steps:
+   - name: Get the build artifacts 
+     uses: actions/download-artifact@v4
+     with: 
+      name: dist-files
+   - name: Validate it
+     run: ls
+   - name: Deploy Code 
+     run: echo "deploying.."

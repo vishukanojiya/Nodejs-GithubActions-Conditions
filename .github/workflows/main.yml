@@ -4,16 +4,7 @@ on:
   branches:
    - master
 jobs:
- lint-job1:
-  runs-on: ubuntu-latest
-  steps:
-    - name: Clone the repo
-      uses: actions/checkout@v4
-    - name: Install dependencies
-      run: npm ci
-    - name: Test code
-      run: npm run lint
- test-job2:
+ test-job:
   runs-on: ubuntu-latest
   steps:
    - name: Clone the repo
@@ -21,36 +12,11 @@ jobs:
    - name: Install dependencies
      run: npm ci
    - name: Test code
+     id: run-tests
      run: npm run test
    - name: Upload test report on github 
+     if: steps.run-tests.outcome == 'failure'
      uses: actions/upload-artifact@v4
      with:
       name: test-report
       path: test.json
- build-job3:
-  needs: test-job2
-  runs-on: ubuntu-latest
-  steps:
-   - name: Clone the repo
-     uses: actions/checkout@v4
-   - name: Install dependencies
-     run: npm ci
-   - name: Build code
-     run: npm run build
-   - name: Upload Artifact on github
-     uses: actions/upload-artifact@v4
-     with:
-      name: dist-files 
-      path: dist
- deploy-job4:
-  needs: build-job3
-  runs-on: ubuntu-latest
-  steps:
-   - name: Get the build artifacts 
-     uses: actions/download-artifact@v4
-     with: 
-      name: dist-files
-   - name: Validate it
-     run: ls
-   - name: Deploy Code 
-     run: echo "deploying.."

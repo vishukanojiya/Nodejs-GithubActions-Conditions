@@ -1,22 +1,23 @@
-name: nodejs App Build 
-on: 
+name: matrix in githubactions
+on:
  push:
   branches:
    - master
 jobs:
- test-job:
-  runs-on: ubuntu-latest
+ build-job:
+  strategy:
+   matrix:
+    node-version: [12,14,16]
+    operating-system: [ubuntu-latest, windows-latest]
+  runs-on: ${{operating-system}}
   steps:
-   - name: Clone the repo
-     uses: actions/checkout@v4
-   - name: Install dependencies
-     run: npm ci
-   - name: Test code
-     id: run-tests
-     continue-on-error: true
-     run: npm run test
-   - name: Upload test report on github 
-     uses: actions/upload-artifact@v4
+   - name: Clone the code 
+     uses: actions/checkout@v3
+   - name: Install nodeJS 
+     uses: actions/setup-node@v3
      with:
-      name: test-report
-      path: test.json
+      node-version: ${{node-version}}
+   - name: Install dependencies 
+     run: npm ci
+   - name: Build the code 
+     run: npm run build

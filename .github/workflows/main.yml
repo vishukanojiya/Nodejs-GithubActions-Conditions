@@ -22,6 +22,11 @@ jobs:
      run: npm ci
    - name: Test code
      run: npm run test
+   - name: Upload test report on github 
+     uses: actions/upload-artifact@v4
+     with:
+      name: test-report
+      path: test.json
  build-job3:
   needs: test-job2
   runs-on: ubuntu-latest

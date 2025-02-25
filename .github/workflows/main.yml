@@ -1,32 +1,15 @@
-name: matrix in githubactions
-on:
+name: nodejs App Build 
+on: 
  push:
   branches:
    - master
 jobs:
- build-job:
-  continue-on-error: true
-  strategy:
-   matrix:
-    node-version: [12,14,16]
-    operating-system: [ubuntu-latest, windows-latest]
-    exclude:
-     - node-version: 12
-       operating-system: ubuntu-latest
-     - node-version: 12
-       operating-system: windows-latest
-    include:
-     - node-version: 18
-       operating-system: ubuntu-latest  
-  runs-on: ${{matrix.operating-system}}
+ test:
+  runs-on: ubuntu-latest
   steps:
-   - name: Clone the code 
-     uses: actions/checkout@v3
-   - name: Install nodeJS 
-     uses: actions/setup-node@v3
-     with:
-      node-version: ${{matrix.node-version}}
-   - name: Install dependencies 
+   - name: Clone the repo
+     uses: actions/checkout@v4
+   - name: Install dependencies
      run: npm ci
-   - name: Build the code 
-     run: npm run build
+   - name: Test code
+     run: npm run test

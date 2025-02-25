@@ -1,4 +1,4 @@
-name: nodejs App Build 
+name: Build the code
 on: 
  push:
   branches:
@@ -16,6 +16,6 @@ jobs:
     - name: Install nodejs
       uses: actions/setup-nodejs@v3
       with:
-       node-version: ${{matrix.node_version}}
+        node-version: ${{matrix.node_version}}
     - name: install dependencies
       run: npm ci
